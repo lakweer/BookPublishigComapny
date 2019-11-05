@@ -1,9 +1,9 @@
 package bookpublishingcompany.appicationlogic.validators;
 
-public class Error {
+public class ValidationError {
     private String errMsg;
 
-    public Error(String errMsg) {
+    public ValidationError(String errMsg) {
         this.errMsg = errMsg;
     }
 

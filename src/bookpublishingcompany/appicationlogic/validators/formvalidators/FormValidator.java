@@ -1,5 +1,7 @@
 package bookpublishingcompany.appicationlogic.validators.formvalidators;
 
+import bookpublishingcompany.appicationlogic.validators.ValidationError;
+
 import java.util.Arrays;
 
 /***
@@ -19,9 +21,28 @@ public class FormValidator {
         return instance;
     }
 
-    public boolean dateValidate(String dateString){
-        int[] dateParts = Arrays.stream(dateString.split("/")).mapToInt(Integer::parseInt).toArray();
+    public ValidationError checkNotNull(Object o){
+        if (o != null) return null;
+        return new ValidationError("Nothing Exists!");
+    }
 
-        return true;
+    public ValidationError dateValidate(String dateString){
+        int[] dateParts = Arrays.stream(dateString.split("/")).mapToInt(Integer::parseInt).toArray();
+        return null;
+    }
+
+    public ValidationError nameValidate(String nameString){
+        if ((nameString != null) || !nameString.equals("")) return null;
+        return new ValidationError("Name Invalid");
+    }
+
+    public ValidationError emailValidator(String emailAddress){
+        if (emailAddress != null) return null;
+        return new ValidationError("Email Invalid");
+    }
+
+    public ValidationError phoneValidate(String phone){
+        if (phone != null) return null;
+        return new ValidationError("Phone Invalid");
     }
 }
