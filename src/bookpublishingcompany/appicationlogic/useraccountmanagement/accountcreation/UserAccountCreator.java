@@ -1,6 +1,7 @@
 package bookpublishingcompany.appicationlogic.useraccountmanagement.accountcreation;
 
 import bookpublishingcompany.dataexchange.testingpurpose.DataSaver;
+import bookpublishingcompany.userinterface.testingpurpose.useraccountcreation.UserAccountCreationUI;
 
 /***
  * This class uses Singleton pattern in its instantiation.
@@ -19,5 +20,4 @@ public class UserAccountCreator {
         if (instance == null) instance = new UserAccountCreator();
         return instance;
     }
-
 }

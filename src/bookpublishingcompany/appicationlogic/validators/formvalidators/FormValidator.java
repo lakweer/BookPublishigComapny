@@ -22,7 +22,6 @@ public class FormValidator {
     public boolean dateValidate(String dateString){
         int[] dateParts = Arrays.stream(dateString.split("/")).mapToInt(Integer::parseInt).toArray();
 
-
         return true;
     }
 }

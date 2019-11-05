@@ -1,0 +1,10 @@
+User Account Creation Form variable names:
+firstName
+lastName
+dob
+address
+phone
+email
+username
+password
+passwordConfirm
