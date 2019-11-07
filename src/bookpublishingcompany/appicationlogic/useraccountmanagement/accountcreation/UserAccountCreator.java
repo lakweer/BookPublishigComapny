@@ -3,7 +3,6 @@ package bookpublishingcompany.appicationlogic.useraccountmanagement.accountcreat
 import bookpublishingcompany.appicationlogic.validators.ValidationError;
 import bookpublishingcompany.appicationlogic.validators.formvalidators.FormValidator;
 import bookpublishingcompany.dataexchange.testingpurpose.DataSaver;
-import bookpublishingcompany.userinterface.testingpurpose.useraccountcreation.UserAccountCreationUI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +16,11 @@ public class UserAccountCreator {
     private static UserAccountCreator instance;
     private DataSaver dataSaver;
     private ArrayList<ValidationError> errorList;
+    private final String[] userTypes = {"admin", "printing", "finance", "typeSetting", "storeKeeping"};
+    FormValidator formValidator;
 
-    private UserAccountCreator(){
+    private UserAccountCreator() {
+        formValidator = new FormValidator();
         dataSaver = DataSaver.getInstance();
         errorList = new ArrayList<>();
     }
@@ -28,26 +30,71 @@ public class UserAccountCreator {
         return instance;
     }
 
-    public boolean validateFormInput(HashMap<String, String> inputData){
-        FormValidator validator = FormValidator.getInstance();
+    private boolean validateFormInput(HashMap<String, String> inputData) {
         errorList.clear();
 
-        addError(validator.checkNotNull(inputData.get("userType")));
-        addError(validator.nameValidate(inputData.get("firstName")));
-        addError(validator.nameValidate(inputData.get("lastName")));
-        addError(validator.dateValidate(inputData.get("dob")));
-        addError(validator.phoneValidate(inputData.get("phone")));
-
-        System.out.println(errorList.size() + "Errors:");
-        for (ValidationError e : errorList){
-            if (e != null) System.out.print(e.getErrorMessage());
+        for (String parameter : inputData.keySet()) {
+            addError(parameter, inputData.get(parameter));
         }
 
-        if (errorList.size() != 0) return false;
+        if (!inputData.get("password").equals(inputData.get("confirmPassword"))) {
+            errorList.add(new ValidationError("confirmPassword", "Your passwords don't match"));
+        }
+
+        if (errorList.size() != 0) {
+            for (ValidationError validationError : errorList){
+                System.out.println(validationError.getErrMsg());
+            }
+            return false;
+        }
         return true;
     }
 
-    public void addError(ValidationError error){
-        if (error != null) errorList.add(error);
+    private void addError(String parameter, String data) {
+        String errorMessage = "";
+
+        switch (parameter) {
+            case "firstName":
+                if (!formValidator.nameValidate(data)) {
+                    errorMessage = "Invalid First Name";
+                }
+                break;
+            case "lastName":
+                if (!formValidator.nameValidate(data)) {
+                    errorMessage = "Invalid Last Name";
+                }
+                break;
+            case "phone":
+                if (data == null) {
+                    errorMessage = "Please give a Phone Number";
+                } else if (!formValidator.phoneValidate(data)) {
+                    errorMessage = "Invalid Phone Number";
+                }
+                break;
+            case "address":
+                if (data == null) {
+                    errorMessage = "Please give an address";
+                }
+                break;
+            case "email":
+                if (!formValidator.emailValidate(data)) {
+                    errorMessage = "Invalid email address";
+                }
+                break;
+            case "username":
+                if (data == null) {
+                    errorMessage = "Please provide a username";
+                }
+                break;
+            case "password":
+                if (!formValidator.passwordValidate(data)) {
+                    errorMessage = "Please give a Password which satisfies given conditions";
+                }
+                break;
+        }
+        errorList.add(new ValidationError(parameter, errorMessage));
     }
+
+
+
 }

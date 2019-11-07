@@ -47,7 +47,5 @@ public class UserAccountCreationUI extends UserInterface {
         for (String i : formInput.keySet()){
             System.out.println(i + ": " + formInput.get(i));
         }
-
-        System.out.println(creator.validateFormInput(formInput));
     }
 }

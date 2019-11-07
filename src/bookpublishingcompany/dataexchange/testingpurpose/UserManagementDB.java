@@ -2,17 +2,16 @@ package bookpublishingcompany.dataexchange.testingpurpose;
 
 import bookpublishingcompany.appicationlogic.useraccountmanagement.users.NonSystemUser;
 import bookpublishingcompany.appicationlogic.useraccountmanagement.users.SystemUser;
-import bookpublishingcompany.appicationlogic.useraccountmanagement.users.Unit;
 import bookpublishingcompany.appicationlogic.useraccountmanagement.users.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class UserManagmentDB {
+public class UserManagementDB {
     private Connection connection;
 
     public static void main(String[] args) throws SQLException {
-        UserManagmentDB user = new UserManagmentDB();
+        UserManagementDB user = new UserManagementDB();
 //        user.createAccount(new SystemUser(
 //                "Vidura",
 //                "Prasangana",
@@ -27,14 +26,16 @@ public class UserManagmentDB {
     }
 
     public void createSystemUser(SystemUser user) throws SQLException {
-        connection = Db.getConnection();
+        connection = Database.getConnection();
 
+        //Saving the credentials of user account in SystemUserCredential table
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO " +
                 "9LLVL39k5B.SystemUserCredential(employeeId, email, password) VALUES (UUID_TO_BIN(UUID()),?,?)");
         stmt.setString(1, user.getEmail());
         stmt.setString(2, user.getPassword());
         stmt.execute();
 
+        //Retrieving the ID of the saved user
         PreparedStatement stmt1 = connection.prepareStatement(
                 "SELECT BIN_TO_UUID(employeeId) employeeId FROM 9LLVL39k5B.SystemUserCredential WHERE email=?"
         );
@@ -47,6 +48,7 @@ public class UserManagmentDB {
 
         if (employeeId == null) return; //Failed to create account
 
+        //Saving user details in NonAdminUser table
         PreparedStatement stmt2 = connection.prepareStatement("INSERT INTO " +
                 "9LLVL39k5B.NonAdminUser(employeeId, firstName, lastName, address, salary, mobileNo, unitId, type, email) " +
                 "VALUES (UUID_TO_BIN(?),?,?,?,?,?,?,?,?)");
@@ -64,7 +66,7 @@ public class UserManagmentDB {
     }
 
     public boolean isUnique(String email) throws SQLException {
-        connection = Db.getConnection();
+        connection = Database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT email from 9LLVL39k5B.NonAdminUser where email = ? ;");
         stmt.setString(1, email);
         ResultSet result = stmt.executeQuery();
@@ -72,7 +74,7 @@ public class UserManagmentDB {
     }
 
     public String getPassword(String email) throws SQLException {
-        connection = Db.getConnection();
+        connection = Database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
                 "SELECT BIN_TO_UUID(employeeId) employeeId,password FROM 9LLVL39k5B.SystemUserCredential WHERE email=?"
         );
@@ -87,7 +89,7 @@ public class UserManagmentDB {
     }
 
     public SystemUser getNonAdminSystemUser(String email) throws SQLException {
-        connection = Db.getConnection();
+        connection = Database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
                 "SELECT BIN_TO_UUID(employeeId) employeeId,email,firstName,lastName,address,mobileNo,salary,type,unitId FROM SystemUserCredential NATURAL JOIN NonAdminUser WHERE email = ?;"
         );
@@ -95,7 +97,7 @@ public class UserManagmentDB {
         return getSystemUser(email, stmt);
     }
     public SystemUser getAdminSystemUser(String email) throws SQLException {
-        connection = Db.getConnection();
+        connection = Database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
                 "SELECT BIN_TO_UUID(employeeId) employeeId,email,firstName,lastName,address,mobileNo,salary,unitId FROM SystemUserCredential NATURAL JOIN AdminUser WHERE email = ?;"
         );
@@ -122,7 +124,7 @@ public class UserManagmentDB {
     }
 
     public boolean createNonSystemUser(NonSystemUser user) throws SQLException {
-        connection = Db.getConnection();
+        connection = Database.getConnection();
 
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO " +
                 "9LLVL39k5B.NonAdminUser(employeeId, firstName, lastName, address, salary, mobileNo, unitId) " +
@@ -138,7 +140,7 @@ public class UserManagmentDB {
     }
 
     public boolean removeNonSystemUSer(NonSystemUser user) throws SQLException {
-        connection = Db.getConnection();
+        connection = Database.getConnection();
 
         PreparedStatement stmt = connection.prepareStatement("DELETE FROM `9LLVL39k5B`.NonSystemUser WHERE employeeId = ?");
         stmt.setString(1,user.getId());
@@ -147,7 +149,7 @@ public class UserManagmentDB {
     }
 
     public ArrayList<NonSystemUser> getAllNonSystemUsers() throws SQLException {
-        connection = Db.getConnection();
+        connection = Database.getConnection();
 
         ArrayList<NonSystemUser> allNonSystemUsers = new ArrayList<>();
         Statement stmt = connection.createStatement();
@@ -166,6 +168,4 @@ public class UserManagmentDB {
         }
         return allNonSystemUsers;
     }
-
-
 }

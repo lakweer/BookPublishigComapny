@@ -1,9 +1,11 @@
 import bookpublishingcompany.appicationlogic.validators.formvalidators.FormValidator;
+import bookpublishingcompany.dataexchange.testingpurpose.PasswordHashingAgent;
+
+import java.util.Arrays;
 
 public class TestRunProgram {
     public static void main(String[] args) {
-        FormValidator formValidator = FormValidator.getInstance();
-
-        formValidator.dateValidate("01/10/2019");
+        System.out.println(Arrays.toString(PasswordHashingAgent.hashPassword("password")));
+        System.out.println(Arrays.toString(PasswordHashingAgent.hashPassword("password")));
     }
 }

@@ -3,7 +3,7 @@ package bookpublishingcompany.dataexchange.testingpurpose;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class Db {
+public class Database {
     private static Connection connection;
     private final static String host = "remotemysql.com:3306";
     private final static String user = "9LLVL39k5B";
