@@ -50,4 +50,8 @@ public class FormValidator {
         }
         return false;
     }
+
+    public boolean isPositive(float value){
+        return (value >= 0);
+    }
 }

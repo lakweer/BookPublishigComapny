@@ -1,15 +1,15 @@
 package bookpublishingcompany.appicationlogic.useraccountmanagement.users;
 
 public class User {
-    private String firstName,lastName,id,address;
-    private float salary;
+    private String firstName, lastName, id, address;
     private int mobileNo;
+    private float salary;
     private UserType type;
 
     public User(String id,String firstName, String lastName, String address, float salary, int mobileNo, UserType type) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.id = id;
         this.address = address;
         this.salary = salary;
         this.mobileNo = mobileNo;
@@ -29,14 +29,7 @@ public class User {
         return firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getLastName() { return lastName; }
 
     public String getId() {
         return id;
@@ -54,12 +47,18 @@ public class User {
         return address;
     }
 
-
     public UserType getType() {
         return type;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
+    public Object[] getAllDetails(){
+        Object[] details = {id, firstName, lastName, address, mobileNo, salary, type};
+        return details;
+    }
 
     public enum UserType {
         PRINTING_UNIT_USER("PrintingUnitUser",2),
@@ -70,7 +69,8 @@ public class User {
 
         private String string;
         private int unitId;
-        UserType(String string,int id){
+
+        UserType(String string, int id){
             this.string = string;
             this.unitId = id;
         }

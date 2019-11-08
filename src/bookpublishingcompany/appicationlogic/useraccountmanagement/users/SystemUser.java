@@ -1,7 +1,7 @@
 package bookpublishingcompany.appicationlogic.useraccountmanagement.users;
 
 public class SystemUser extends User {
-    private String email, password;
+    private String email;
 
     public SystemUser(String firstName, String lastName, String address, float salary, int mobileNo, UserType type, String email) {
         super(firstName, lastName, address, salary, mobileNo, type);
@@ -15,14 +15,5 @@ public class SystemUser extends User {
     public String getEmail() {
         return email;
     }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
 
 }

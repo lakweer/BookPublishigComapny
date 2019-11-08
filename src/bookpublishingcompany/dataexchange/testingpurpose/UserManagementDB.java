@@ -10,29 +10,14 @@ import java.util.ArrayList;
 public class UserManagementDB {
     private Connection connection;
 
-    public static void main(String[] args) throws SQLException {
-        UserManagementDB user = new UserManagementDB();
-//        user.createAccount(new SystemUser(
-//                "Vidura",
-//                "Prasangana",
-//                "Kuliyapitiya",
-//                10000f,
-//                775335920,
-//                User.UserType.FINANCEUNITUSER,
-//                "vidura@gmail.com",
-//                "12345678"));
-//        user.isUnique("test@gmail.com");
-        System.out.println(user.getPassword("vidura@gmail.com"));
-    }
-
-    public void createSystemUser(SystemUser user) throws SQLException {
+    public void createSystemUser(SystemUser user, String password) throws SQLException {
         connection = Database.getConnection();
 
         //Saving the credentials of user account in SystemUserCredential table
         PreparedStatement stmt = connection.prepareStatement("INSERT INTO " +
                 "9LLVL39k5B.SystemUserCredential(employeeId, email, password) VALUES (UUID_TO_BIN(UUID()),?,?)");
         stmt.setString(1, user.getEmail());
-        stmt.setString(2, user.getPassword());
+        stmt.setString(2, password);
         stmt.execute();
 
         //Retrieving the ID of the saved user
@@ -65,12 +50,17 @@ public class UserManagementDB {
 
     }
 
-    public boolean isUnique(String email) throws SQLException {
+    /***
+     * @param email
+     * @return true if no match found, false otherwise
+     * @throws SQLException
+     */
+    public boolean isEmailUnique(String email) throws SQLException {
         connection = Database.getConnection();
         PreparedStatement stmt = connection.prepareStatement("SELECT email from 9LLVL39k5B.NonAdminUser where email = ? ;");
         stmt.setString(1, email);
         ResultSet result = stmt.executeQuery();
-        return result.first();
+        return !result.first();
     }
 
     public String getPassword(String email) throws SQLException {
@@ -138,7 +128,6 @@ public class UserManagementDB {
 //        stmt2.setString(7, user.getType().toString());
         return stmt.execute();
     }
-
     public boolean removeNonSystemUSer(NonSystemUser user) throws SQLException {
         connection = Database.getConnection();
 
@@ -147,7 +136,6 @@ public class UserManagementDB {
 
         return stmt.execute();
     }
-
     public ArrayList<NonSystemUser> getAllNonSystemUsers() throws SQLException {
         connection = Database.getConnection();
 
@@ -168,4 +156,19 @@ public class UserManagementDB {
         }
         return allNonSystemUsers;
     }
+
+    //    public static void main(String[] args) throws SQLException {
+//        UserManagementDB user = new UserManagementDB();
+////        user.createAccount(new SystemUser(
+////                "Vidura",
+////                "Prasangana",
+////                "Kuliyapitiya",
+////                10000f,
+////                775335920,
+////                User.UserType.FINANCEUNITUSER,
+////                "vidura@gmail.com",
+////                "12345678"));
+////        user.isUnique("test@gmail.com");
+//        System.out.println(user.getPassword("vidura@gmail.com"));
+//    }
 }

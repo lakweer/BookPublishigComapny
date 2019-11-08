@@ -1,10 +1,16 @@
 package bookpublishingcompany.appicationlogic.useraccountmanagement.accountcreation;
 
+import bookpublishingcompany.appicationlogic.useraccountmanagement.users.SystemUser;
+import bookpublishingcompany.appicationlogic.useraccountmanagement.users.User;
 import bookpublishingcompany.appicationlogic.validators.ValidationError;
 import bookpublishingcompany.appicationlogic.validators.formvalidators.FormValidator;
 import bookpublishingcompany.dataexchange.testingpurpose.DataSaver;
+import bookpublishingcompany.dataexchange.testingpurpose.PasswordHashingAgent;
+import bookpublishingcompany.dataexchange.testingpurpose.UserManagementDB;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /***
@@ -16,7 +22,6 @@ public class UserAccountCreator {
     private static UserAccountCreator instance;
     private DataSaver dataSaver;
     private ArrayList<ValidationError> errorList;
-    private final String[] userTypes = {"admin", "printing", "finance", "typeSetting", "storeKeeping"};
     FormValidator formValidator;
 
     private UserAccountCreator() {
@@ -30,7 +35,7 @@ public class UserAccountCreator {
         return instance;
     }
 
-    private boolean validateFormInput(HashMap<String, String> inputData) {
+    private boolean validateFormInput(HashMap<String, String> inputData) throws SQLException {
         errorList.clear();
 
         for (String parameter : inputData.keySet()) {
@@ -41,6 +46,8 @@ public class UserAccountCreator {
             errorList.add(new ValidationError("confirmPassword", "Your passwords don't match"));
         }
 
+        System.out.println(errorList.size());
+
         if (errorList.size() != 0) {
             for (ValidationError validationError : errorList){
                 System.out.println(validationError.getErrMsg());
@@ -50,7 +57,7 @@ public class UserAccountCreator {
         return true;
     }
 
-    private void addError(String parameter, String data) {
+    private void addError(String parameter, String data) throws SQLException {
         String errorMessage = "";
 
         switch (parameter) {
@@ -64,7 +71,7 @@ public class UserAccountCreator {
                     errorMessage = "Invalid Last Name";
                 }
                 break;
-            case "phone":
+            case "mobileNo":
                 if (data == null) {
                     errorMessage = "Please give a Phone Number";
                 } else if (!formValidator.phoneValidate(data)) {
@@ -79,11 +86,11 @@ public class UserAccountCreator {
             case "email":
                 if (!formValidator.emailValidate(data)) {
                     errorMessage = "Invalid email address";
-                }
-                break;
-            case "username":
-                if (data == null) {
-                    errorMessage = "Please provide a username";
+                } else {
+                    UserManagementDB userManagementDB = new UserManagementDB();
+                    if (!userManagementDB.isEmailUnique(data)){
+                        errorMessage = "Email is already being used. Please use another account.";
+                    }
                 }
                 break;
             case "password":
@@ -91,10 +98,28 @@ public class UserAccountCreator {
                     errorMessage = "Please give a Password which satisfies given conditions";
                 }
                 break;
+            case "salary":
+                if (!formValidator.isPositive(Float.parseFloat(data))){
+                    errorMessage = "Invalid value for salary";
+                }
         }
-        errorList.add(new ValidationError(parameter, errorMessage));
+        if (!errorMessage.equals("")) errorList.add(new ValidationError(parameter, errorMessage));
     }
 
+    public void createAccount(HashMap<String, String> inputData) throws SQLException {
+        if (validateFormInput(inputData)){
+            System.out.println("Form Validation Successful");
+            String hashedPassword = PasswordHashingAgent.hashPassword(inputData.get("password"));
 
+            SystemUser userNew = new SystemUser(inputData.get("firstName"), inputData.get("lastName"), inputData.get("address"),
+                    Float.parseFloat(inputData.get("salary")),
+                    Integer.parseInt(inputData.get("mobileNo")),
+                    User.UserType.getType(inputData.get("userType")), inputData.get("email"));
 
+            System.out.println(Arrays.toString(userNew.getAllDetails()));
+
+            UserManagementDB userManagementDB = new UserManagementDB();
+            userManagementDB.createSystemUser(userNew, hashedPassword);
+        }
+    }
 }

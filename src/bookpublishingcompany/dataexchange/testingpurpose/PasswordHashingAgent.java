@@ -1,9 +1,10 @@
 package bookpublishingcompany.dataexchange.testingpurpose;
 
+import bookpublishingcompany.configuration.Config;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 public class PasswordHashingAgent {
 
@@ -19,20 +20,21 @@ public class PasswordHashingAgent {
     }
 
     /*
-    code taken from https://www.baeldung.com/java-password-hashing
+    code modified from https://www.baeldung.com/java-password-hashing
      */
-    public static byte[] hashPassword(String passwordString) {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
+    public static String hashPassword(String passwordString) {
+
+        String salt = Config.getInstance().getConfigInfo().get("passSalt");
 
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
-            messageDigest.update(salt);
-            return messageDigest.digest(passwordString.getBytes(StandardCharsets.UTF_8));
+            messageDigest.update(salt.getBytes());
+            byte[] hashedPasswordBytes = messageDigest.digest(passwordString.getBytes(StandardCharsets.UTF_8));
+
+            return new String(hashedPasswordBytes);
         } catch (NoSuchAlgorithmException e){
             e.printStackTrace();
         }
-        return "".getBytes(StandardCharsets.UTF_8);
+        return "Hashing Failed!";
     }
 }
