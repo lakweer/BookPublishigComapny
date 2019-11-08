@@ -4,13 +4,11 @@ import bookpublishingcompany.appicationlogic.useraccountmanagement.users.SystemU
 import bookpublishingcompany.appicationlogic.useraccountmanagement.users.User;
 import bookpublishingcompany.appicationlogic.validators.ValidationError;
 import bookpublishingcompany.appicationlogic.validators.formvalidators.FormValidator;
-import bookpublishingcompany.dataexchange.testingpurpose.DataSaver;
-import bookpublishingcompany.dataexchange.testingpurpose.PasswordHashingAgent;
+import bookpublishingcompany.dataexchange.testingpurpose.PasswordProcessor;
 import bookpublishingcompany.dataexchange.testingpurpose.UserManagementDB;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /***
@@ -20,13 +18,11 @@ import java.util.HashMap;
 public class UserAccountCreator {
 
     private static UserAccountCreator instance;
-    private DataSaver dataSaver;
     private ArrayList<ValidationError> errorList;
     FormValidator formValidator;
 
     private UserAccountCreator() {
         formValidator = new FormValidator();
-        dataSaver = DataSaver.getInstance();
         errorList = new ArrayList<>();
     }
 
@@ -45,8 +41,6 @@ public class UserAccountCreator {
         if (!inputData.get("password").equals(inputData.get("confirmPassword"))) {
             errorList.add(new ValidationError("confirmPassword", "Your passwords don't match"));
         }
-
-        System.out.println(errorList.size());
 
         if (errorList.size() != 0) {
             for (ValidationError validationError : errorList){
@@ -109,17 +103,16 @@ public class UserAccountCreator {
     public void createAccount(HashMap<String, String> inputData) throws SQLException {
         if (validateFormInput(inputData)){
             System.out.println("Form Validation Successful");
-            String hashedPassword = PasswordHashingAgent.hashPassword(inputData.get("password"));
+            String hashedPassword = PasswordProcessor.hashPassword(inputData.get("password"));
 
             SystemUser userNew = new SystemUser(inputData.get("firstName"), inputData.get("lastName"), inputData.get("address"),
                     Float.parseFloat(inputData.get("salary")),
                     Integer.parseInt(inputData.get("mobileNo")),
                     User.UserType.getType(inputData.get("userType")), inputData.get("email"));
 
-            System.out.println(Arrays.toString(userNew.getAllDetails()));
-
             UserManagementDB userManagementDB = new UserManagementDB();
             userManagementDB.createSystemUser(userNew, hashedPassword);
+            System.out.println("Account Successfully created!");
         }
     }
 }

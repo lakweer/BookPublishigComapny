@@ -42,10 +42,6 @@ public class UserAccountCreationUI extends UserInterface {
         System.out.print("Confirm Password: ");
         formInput.put("confirmPassword", scanner.nextLine());
 
-        for (String i : formInput.keySet()){
-            System.out.println(i + ": " + formInput.get(i));
-        }
-
         UserAccountCreator.getInstance().createAccount(formInput);
     }
 }

@@ -6,16 +6,16 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class PasswordHashingAgent {
+public class PasswordProcessor {
 
-    private static PasswordHashingAgent instance;
+    private static PasswordProcessor instance;
 
-    private PasswordHashingAgent(){
+    private PasswordProcessor(){
 
     }
 
-    public static PasswordHashingAgent getInstance(){
-        if (instance == null) instance = new PasswordHashingAgent();
+    public static PasswordProcessor getInstance(){
+        if (instance == null) instance = new PasswordProcessor();
         return instance;
     }
 
