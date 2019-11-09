@@ -2,6 +2,7 @@ package bookpublishingcompany.dataexchange.testingpurpose;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Database {
     private static Connection connection;
@@ -22,5 +23,10 @@ public class Database {
             }
         }
         return connection;
+    }
+
+    public static void closeConnection() throws SQLException {
+        connection.close();
+        connection=null;
     }
 }
