@@ -1,4 +1,4 @@
-package bookpublishingcompany.appicationlogic.useraccountmanagement.users;
+package bookpublishingcompany.appicationlogic.companyunits;
 
 public class Unit {
     private int unitId;
