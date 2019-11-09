@@ -10,11 +10,11 @@ public class CustomerManager {
     private static CustomerManager instance;
     private static CustomerManagementDB customerManagementDB;
 
-    private CustomerManager(){
+    private CustomerManager() {
         customerManagementDB = new CustomerManagementDB();
     }
 
-    public static CustomerManager getInstance(){
+    public static CustomerManager getInstance() {
         if (instance == null) instance = new CustomerManager();
         return instance;
     }
@@ -25,7 +25,8 @@ public class CustomerManager {
         customerManagementDB.addAuthor(author);
     }
 
-    public static Author getAuthor(String authorName, int mobileNo){
+    public static Author getAuthor(String authorName, int mobileNo) {
+        //needs to be changed. This return value is just a dummy
         return new Author("1a", "Martin", 123, "");
     }
 }

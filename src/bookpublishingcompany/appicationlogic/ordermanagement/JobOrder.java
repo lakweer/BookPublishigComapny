@@ -20,5 +20,7 @@ public class JobOrder {
         this.advanceAmount = advanceAmount;
     }
 
-
+    public String getId() {
+        return id;
+    }
 }

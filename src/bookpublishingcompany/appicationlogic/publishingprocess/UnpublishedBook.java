@@ -10,7 +10,6 @@ public class UnpublishedBook extends Book {
     private String drafts;
     private BookState state = BookState.CREATED;
     private float price;
-//    private int unPublishedCopies;
 
     public UnpublishedBook(String id, String name, String drafts, BookState state, float price) {
         super(id, name);
@@ -53,9 +52,6 @@ public class UnpublishedBook extends Book {
         FINAL_PRINTING_SCHEDULED("finalPrintingScheduled"),
         FINAL_PRINTING_COMPLETED("finalPrintingCompleted"),
         COMPLETED("completed");
-
-
-
 
         private String string;
 

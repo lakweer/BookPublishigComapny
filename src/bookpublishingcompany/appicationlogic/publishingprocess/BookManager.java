@@ -1,9 +1,9 @@
 package bookpublishingcompany.appicationlogic.publishingprocess;
 
 import bookpublishingcompany.appicationlogic.customermanagement.Author;
+import bookpublishingcompany.appicationlogic.ordermanagement.OrderManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class BookManager {
 
@@ -18,7 +18,10 @@ public class BookManager {
         return instance;
     }
 
-    public static void createUnpublishedBook(String bookName, ArrayList<Author> authors){
+    public static void createUnpublishedBook(String bookName, ArrayList<Author> authors,
+                                             String dateDue, float totalAmount, float advanceAmount){
         UnpublishedBook book = new UnpublishedBook(bookName, authors);
+        OrderManager orderManager = OrderManager.getInstance();
+        String orderId = orderManager.createNewAuthorOrder(authors.get(0).getId(), dateDue, totalAmount, advanceAmount);
     }
 }

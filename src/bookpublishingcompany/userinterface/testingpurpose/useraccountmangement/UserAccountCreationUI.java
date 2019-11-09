@@ -1,4 +1,4 @@
-package bookpublishingcompany.userinterface.testingpurpose.useraccountcreation;
+package bookpublishingcompany.userinterface.testingpurpose.useraccountmangement;
 
 import bookpublishingcompany.appicationlogic.useraccountmanagement.accountcreation.UserAccountCreator;
 import bookpublishingcompany.userinterface.testingpurpose.UserInterface;

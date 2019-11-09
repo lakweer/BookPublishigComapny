@@ -31,8 +31,8 @@ public class CustomerManagementDB {
         while (resultSet.next()){
             authors.add(new Author(resultSet.getString(1),
                     resultSet.getString(2),
-                    resultSet.getString(4),
-                    resultSet.getInt(3)));
+                    resultSet.getInt(3),
+                    resultSet.getString(4)));
         }
         return authors;
 
@@ -49,8 +49,8 @@ public class CustomerManagementDB {
             return new Author(
                     id,
                     resultSet.getString(1),
-                    resultSet.getString(3),
-                    resultSet.getInt(2)
+                    resultSet.getInt(2),
+                    resultSet.getString(3)
             );
 
         }
@@ -70,8 +70,8 @@ public class CustomerManagementDB {
             return new Author(
                     resultSet.getString(1),
                     resultSet.getString(2),
-                    resultSet.getString(4),
-                    resultSet.getInt(3)
+                    resultSet.getInt(3),
+                    resultSet.getString(4)
             );
 
         }

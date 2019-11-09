@@ -1,8 +1,7 @@
-package bookpublishingcompany.userinterface.testingpurpose.useraccountcreation;
+package bookpublishingcompany.userinterface.testingpurpose.useraccountmangement;
 
 import bookpublishingcompany.appicationlogic.useraccountmanagement.login.LoginManager;
 import bookpublishingcompany.appicationlogic.useraccountmanagement.users.SystemUser;
-import bookpublishingcompany.appicationlogic.useraccountmanagement.users.User;
 
 import java.sql.SQLException;
 import java.util.Scanner;
