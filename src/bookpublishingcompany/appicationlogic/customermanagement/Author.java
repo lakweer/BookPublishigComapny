@@ -17,6 +17,14 @@ public class Author extends Customer {
         this.email = email;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getId() {
         return id;
     }
@@ -27,9 +35,5 @@ public class Author extends Customer {
 
     public int getMobileNo() {
         return mobileNo;
-    }
-
-    public String getEmail() {
-        return email;
     }
 }

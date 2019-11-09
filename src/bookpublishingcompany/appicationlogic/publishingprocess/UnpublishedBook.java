@@ -7,9 +7,17 @@ import java.util.HashMap;
 
 public class UnpublishedBook extends Book {
 
-    private HashMap<String, String> drafts;
+    private String drafts;
     private BookState state = BookState.CREATED;
+    private float price;
+//    private int unPublishedCopies;
 
+    public UnpublishedBook(String id, String name, String drafts, BookState state, float price) {
+        super(id, name);
+        this.drafts = drafts;
+        this.state = state;
+        this.price = price;
+    }
     public UnpublishedBook(String name, ArrayList<Author> authors) {
         super(name, authors);
     }
@@ -22,9 +30,32 @@ public class UnpublishedBook extends Book {
         this.state = state;
     }
 
-    private enum BookState {
+
+    public String getDrafts() {
+        return drafts;
+    }
+
+    public BookState getState() {
+        return state;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public enum BookState {
         CREATED("created"),
-        TYPE_SETTING_SCHEDULED("typeSettingScheduled");
+        TYPE_SETTING_SCHEDULED("typeSettingScheduled"),
+        TYPE_SETTING_COMPLETED("typeSettingCompleted"),
+        CONTENT_EDITED("contentEdited"),
+        DRAFT_PRINTING_SCHEDULED("draftPrintingScheduled"),
+        DRAFT_PRINTING_COMPLETED("draftPrintingCompleted"),
+        FINAL_PRINTING_SCHEDULED("finalPrintingScheduled"),
+        FINAL_PRINTING_COMPLETED("finalPrintingCompleted"),
+        COMPLETED("completed");
+
+
+
 
         private String string;
 
