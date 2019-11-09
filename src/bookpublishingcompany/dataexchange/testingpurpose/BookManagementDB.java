@@ -1,7 +1,7 @@
 package bookpublishingcompany.dataexchange.testingpurpose;
 
-import bookpublishingcompany.appicationlogic.useraccountmanagement.book.Author;
-import bookpublishingcompany.appicationlogic.useraccountmanagement.book.Book;
+import bookpublishingcompany.appicationlogic.customermanagement.Author;
+import bookpublishingcompany.appicationlogic.publishingprocess.Book;
 
 import java.sql.*;
 import java.util.ArrayList;
