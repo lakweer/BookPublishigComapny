@@ -10,8 +10,8 @@ public class Database {
     private final static String user = "9LLVL39k5B";
     private final static String password = "FFJfg4TwJ1";
 
-    public static Connection getConnection() {
-        if (connection == null) {
+    public static Connection getConnection() throws SQLException {
+        if (connection == null || connection.isClosed()) {
             try {
 
                 Class.forName("com.mysql.jdbc.Driver").newInstance();

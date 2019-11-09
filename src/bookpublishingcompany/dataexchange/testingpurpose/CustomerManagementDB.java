@@ -51,6 +51,7 @@ public class CustomerManagementDB {
                     resultSet.getString(1),
                     resultSet.getInt(2),
                     resultSet.getString(3)
+
             );
 
         }
@@ -72,6 +73,7 @@ public class CustomerManagementDB {
                     resultSet.getString(2),
                     resultSet.getInt(3),
                     resultSet.getString(4)
+
             );
 
         }
