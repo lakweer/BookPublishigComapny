@@ -1,5 +1,8 @@
 package bookpublishingcompany.appicationlogic.publishingprocess;
 
+import bookpublishingcompany.appicationlogic.customermanagement.Author;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BookManager {
@@ -15,7 +18,7 @@ public class BookManager {
         return instance;
     }
 
-    public static void createUnpublishedBook(HashMap<String, String> bookDetails){
-
+    public static void createUnpublishedBook(String bookName, ArrayList<Author> authors){
+        UnpublishedBook book = new UnpublishedBook(bookName, authors);
     }
 }

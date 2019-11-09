@@ -8,6 +8,17 @@ public class Book {
     private String id,name;
     private ArrayList<Author> authors;
 
+    public Book(String name, ArrayList<Author> authors) {
+        this.name = name;
+        this.authors = authors;
+    }
+
+    public Book(String id, String name, ArrayList<Author> authors) {
+        this.id = id;
+        this.name = name;
+        this.authors = authors;
+    }
+
     public String getId() {
         return id;
     }
