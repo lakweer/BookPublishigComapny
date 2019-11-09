@@ -4,19 +4,17 @@ public class Unit {
     private int unitId;
     private String unitName;
 
-    public int getUnitId() {
-        return unitId;
+    public Unit(int unitId, String unitName) {
+        this.unitId = unitId;
+        this.unitName = unitName;
     }
 
-    public void setUnitId(int unitId) {
-        this.unitId = unitId;
+    public int getUnitId() {
+        return unitId;
     }
 
     public String getUnitName() {
         return unitName;
     }
 
-    public void setUnitName(String unitName) {
-        this.unitName = unitName;
-    }
 }

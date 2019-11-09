@@ -1,6 +1,5 @@
 package bookpublishingcompany.dataexchange.testingpurpose;
 
-import bookpublishingcompany.appicationlogic.customermanagement.Author;
 import bookpublishingcompany.appicationlogic.publishingprocess.Book;
 
 import java.sql.*;
@@ -34,7 +33,7 @@ public class BookManagementDB {
         return books;
     }
 
-    public boolean addBook(Book book) throws SQLException {
+    public boolean addUnpublishedBook(Book book) throws SQLException {
         connection = Database.getConnection();
 
         Statement stmt0 = connection.createStatement();
@@ -70,32 +69,5 @@ public class BookManagementDB {
         });
 
         return stmt.execute();
-    }
-
-    public boolean addAuthor(Author author) throws SQLException {
-        connection = Database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(
-                "INSERT INTO `9LLVL39k5B`.Author(name, mobileNo) VALUES (?,?);"
-        );
-        stmt.setString(1, author.getName());
-        stmt.setInt(2, author.getMobileNo());
-        return stmt.execute();
-    }
-
-    public Author getAuthor(String id) throws SQLException {
-        connection = Database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(
-                "SELECT  name, mobileNo FROM Author WHERE authorId=UUID_TO_BIN(?);"
-        );
-        stmt.setString(1,id);
-        ResultSet resultSet = stmt.executeQuery();
-        if(resultSet.next()){
-            return new Author(
-                    id,
-                    resultSet.getString("name"),
-                    resultSet.getInt("mobileNo"));
-
-        }
-        return null;
     }
 }
