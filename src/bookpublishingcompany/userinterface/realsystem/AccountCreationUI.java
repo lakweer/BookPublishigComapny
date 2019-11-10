@@ -25,12 +25,12 @@ public class AccountCreationUI extends Application{
 		HashMap<String, String> UserInformation = new HashMap<String, String>();
 		
 		//Start of UI gadgets
-		 ComboBox userType = new ComboBox();
-		 userType.getItems().add("Admin");
-		 userType.getItems().add("Stock Keeper");
-		 userType.getItems().add("Printer");
-		 userType.getItems().add("Accountant");
-		 userType.getItems().add("Head of Typesetting Unit");
+		 ComboBox userTypeCombo = new ComboBox();
+		 userTypeCombo.getItems().add("Admin");
+		 userTypeCombo.getItems().add("Stock Keeper");
+		 userTypeCombo.getItems().add("Printer");
+		 userTypeCombo.getItems().add("Accountant");
+		 userTypeCombo.getItems().add("Head of Typesetting Unit");
 		Label Title = new Label("Book Publishing Company");
 		Label UType = new Label("Type of User");
 		Label FirstName = new Label("First Name");
@@ -88,7 +88,7 @@ public class AccountCreationUI extends Application{
 		
 		Create.setOnAction(e -> {
 			//define variables
-			String usertype = (String) userType.getValue();
+			String userType = (String) userTypeCombo.getValue();
 			String firstName = FName.getText();
 			String lastName = (String) LName.getText();
 			String dob = BD.getValue().toString();
@@ -101,7 +101,7 @@ public class AccountCreationUI extends Application{
 			
 			
 			//insert into a hash map
-			UserInformation.put("usertype", usertype);
+			UserInformation.put("userType", userType);
 			UserInformation.put("firstName", firstName);
 			UserInformation.put("lastName", lastName);
 			UserInformation.put("dob", dob);
@@ -121,7 +121,7 @@ public class AccountCreationUI extends Application{
 		root.setAlignment(Pos.CENTER);
 		root.setId("root");
 		root.setSpacing(10);
-		root.getChildren().addAll(Title, UType, userType, FirstName, FName, LastName, LName, BDay, BD, Address, Add, PhoneNum, Phone, Email, Mail, UserName, Uname, Password, Pword, PasswordConfirm, PwordCon, Create);
+		root.getChildren().addAll(Title, UType, userTypeCombo, FirstName, FName, LastName, LName, BDay, BD, Address, Add, PhoneNum, Phone, Email, Mail, UserName, Uname, Password, Pword, PasswordConfirm, PwordCon, Create);
 		Scene scene = new Scene(root,1000,1000);
 		scene.getStylesheets().add("Style.css");
 		
