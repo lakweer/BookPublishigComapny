@@ -17,8 +17,9 @@ public class UnpublishedBook extends Book {
         super(name, authors);
     }
 
-    public UnpublishedBook(String id, String name, ArrayList<Author> authors) {
+    public UnpublishedBook(String id, String name, ArrayList<Author> authors, BookState state) {
         super(id, name, authors);
+        this.state = state;
     }
 
     public void setState(BookState state) {

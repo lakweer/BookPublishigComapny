@@ -28,15 +28,16 @@ public class BookManagementDB {
 
         //Insert record of book into Book table
         PreparedStatement stmt1 = connection.prepareStatement(
-                "INSERT INTO `9LLVL39k5B`.Book (name, bookId) VALUES (?, UUID_TO_BIN(?));"
+                "INSERT INTO `9LLVL39k5B`.Book (bookName, version, bookId) VALUES (?, ?, UUID_TO_BIN(?));"
         );
         stmt1.setString(1, book.getName());
-        stmt1.setString(2, finalUUID);
+        stmt1.setInt(2, book.getVersion());
+        stmt1.setString(3, finalUUID);
         stmt1.execute();
 
         //Insert record of book into UnpublishedBook table
         PreparedStatement stmt2 = connection.prepareStatement(
-                "INSERT INTO `9LLVL39k5B`.UnpublishedBook(name, bookState,bookId)  VALUES (?,?, UUID_TO_BIN(?));"
+                "INSERT INTO `9LLVL39k5B`.UnpublishedBook(bookName, bookState,bookId)  VALUES (?,?, UUID_TO_BIN(?));"
         );
 
         UnpublishedBook.BookState[] states = UnpublishedBook.BookState.values();
@@ -64,10 +65,10 @@ public class BookManagementDB {
     public ArrayList<Author> getAuthorsOfBook(Book book) throws SQLException {
         connection = Database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
-                "SELECT BIN_TO_UUID(authorId) authorId FROM `9LLVL39k5B`.Author_book WHERE bookId=UUID_TO_BIN(?)"
+                "SELECT BIN_TO_UUID(authorId) authorId FROM `9LLVL39k5B`.Author_book WHERE bookId = UUID_TO_BIN(?);"
         );
 
-        stmt.setString(1,book.getId());
+        stmt.setString(1, book.getId());
         ResultSet resultSet = stmt.executeQuery();
         StringBuilder builder = new StringBuilder();
         ArrayList<String> ids = new ArrayList<>();
@@ -77,10 +78,11 @@ public class BookManagementDB {
         }
 
         PreparedStatement stmt2 = connection.prepareStatement(
-                "SELECT BIN_TO_UUID(authorId) authorId, name, mobileNo, email FROM  `9LLVL39k5B`.Author WHERE authorId IN ("+builder.deleteCharAt( builder.length() -1 ).toString() + ")"
+                "SELECT BIN_TO_UUID(authorId) authorId, authorName, mobileNo, email FROM  `9LLVL39k5B`.Author " +
+                        "WHERE authorId IN (" + builder.deleteCharAt( builder.length() -1 ).toString() + ")"
         );
-        for(int i=1;i<=ids.size();i++){
-            stmt2.setString(i,ids.get(i-1));
+        for(int i = 1; i <= ids.size(); i++){
+            stmt2.setString(i, ids.get(i-1));
         }
         ResultSet resultSet1 = stmt2.executeQuery();
         ArrayList<Author> authors = new ArrayList<>();
@@ -96,19 +98,24 @@ public class BookManagementDB {
         return authors;
     }
 
-    public UnpublishedBook getUnPublishedBook(String bookId) throws SQLException {
+    public UnpublishedBook getUnpublishedBook(String name, int version) throws SQLException {
         connection = Database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
-                "SELECT bookId, name, bookState  FROM 9LLVL39k5B.UnpublishedBook WHERE bookId =  uuid_to_bin(?);"
+                "SELECT BIN_TO_UUID(bookId) bookId, bookName, version, bookState  FROM " +
+                        "9LLVL39k5B.Book NATURAL JOIN 9LLVL39k5B.UnpublishedBook " +
+                        "WHERE (bookName, version) = ((?), (?));"
         );
-        stmt.setString(1, bookId);
+        stmt.setString(1, name);
+        stmt.setInt(2, version);
         ResultSet resultSet = stmt.executeQuery();
         if (resultSet.next()) {
-            return new UnpublishedBook(
+            UnpublishedBook book = new UnpublishedBook(
                     resultSet.getString(1),
                     resultSet.getString(2),
-                    UnpublishedBook.BookState.values()[resultSet.getInt(3)]
+                    UnpublishedBook.BookState.values()[resultSet.getInt(4)]
             );
+            book.setVersion(resultSet.getInt(3));
+            return book;
         }
         return null;
     }
@@ -116,15 +123,19 @@ public class BookManagementDB {
     public ArrayList<UnpublishedBook> getUnPublishedBooks() throws SQLException {
         connection = Database.getConnection();
         Statement stmt = connection.createStatement();
-        ResultSet resultSet = stmt.executeQuery("SELECT bookId, name, bookState FROM 9LLVL39k5B.UnpublishedBook;");
+        ResultSet resultSet = stmt.executeQuery("SELECT BIN_TO_UUID(bookId) bookId, bookName, version, bookState FROM " +
+                "9LLVL39k5B.Book NATURAL JOIN 9LLVL39k5B.UnpublishedBook;");
 
         ArrayList<UnpublishedBook> books = new ArrayList<>();
+        UnpublishedBook unpublishedBook;
         while (resultSet.next()) {
-            books.add(new UnpublishedBook(
+            unpublishedBook = new UnpublishedBook(
                     resultSet.getString(1),
                     resultSet.getString(2),
-                    UnpublishedBook.BookState.values()[resultSet.getInt(3)]
-                    ));
+                    UnpublishedBook.BookState.values()[resultSet.getInt(4)]
+                    );
+            unpublishedBook.setVersion(resultSet.getInt(3));
+            books.add(unpublishedBook);
         }
         return books;
     }

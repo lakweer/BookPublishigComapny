@@ -12,7 +12,7 @@ public class CustomerManagementDB {
     public boolean addAuthor(Author author) throws SQLException {
         connection = Database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
-                "INSERT INTO `9LLVL39k5B`.Author(authorId,name, mobileNo,email) VALUES (UUID_TO_BIN(UUID()),?,?,?);"
+                "INSERT INTO `9LLVL39k5B`.Author(authorId,authorName, mobileNo,email) VALUES (UUID_TO_BIN(UUID()),?,?,?);"
         );
         stmt.setString(1, author.getName());
         stmt.setInt(2, author.getMobileNo());
@@ -24,7 +24,7 @@ public class CustomerManagementDB {
         connection= Database.getConnection();
         Statement stmt = connection.createStatement();
         ResultSet resultSet= stmt.executeQuery(
-                "SELECT BIN_TO_UUID(authorId) authorId, name, mobileNo, email FROM `9LLVL39k5B`.Author;"
+                "SELECT BIN_TO_UUID(authorId) authorId, authorName, mobileNo, email FROM `9LLVL39k5B`.Author;"
         );
 
         ArrayList<Author> authors = new ArrayList<>();
@@ -41,7 +41,7 @@ public class CustomerManagementDB {
     public Author getAuthorById(String id) throws SQLException {
         connection = Database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
-                "SELECT  name, mobileNo,email FROM `9LLVL39k5B`.Author WHERE authorId = UUID_TO_BIN(?);"
+                "SELECT  authorName, mobileNo,email FROM `9LLVL39k5B`.Author WHERE authorId = UUID_TO_BIN(?);"
         );
         stmt.setString(1,id);
         ResultSet resultSet = stmt.executeQuery();
@@ -61,7 +61,8 @@ public class CustomerManagementDB {
     public Author getAuthorByNameAndMobile(String name, int mobileNo) throws SQLException {
         connection = Database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
-                "SELECT BIN_TO_UUID(authorId) authorId, name, mobileNo,email FROM `9LLVL39k5B`.Author WHERE name = ? AND mobileNo = ?;"
+                "SELECT BIN_TO_UUID(authorId) authorId, authorName, mobileNo,email FROM `9LLVL39k5B`.Author " +
+                        "WHERE authorName = ? AND mobileNo = ?;"
         );
         stmt.setString(1,name);
         stmt.setInt(2,mobileNo);

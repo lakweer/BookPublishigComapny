@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Book {
     private String id,name;
     private ArrayList<Author> authors;
+    private int version = 1;
 
     public Book(String id, String name) {
         this.id = id;
@@ -38,5 +39,13 @@ public class Book {
 
     public ArrayList<Author> getAuthors() {
         return authors;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

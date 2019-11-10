@@ -20,8 +20,11 @@ public class CreateBookUI {
         Scanner scanner = new Scanner(System.in);
 
         //Create Book
-        System.out.println("Enter Book Title");
+        System.out.print("Enter Book Title: ");
         String bookName = scanner.nextLine();
+
+        System.out.print("Enter Version: ");
+        int version = Integer.parseInt(scanner.nextLine());
 
         System.out.println("Select Author");
         Author author;
@@ -51,7 +54,7 @@ public class CreateBookUI {
         System.out.println("Advance Amount (LKR): ");
         float advanceAmount = Float.parseFloat(scanner.nextLine());
 
-        BookManager.createUnpublishedBook(bookName, authors, dateDue, totalAmount, advanceAmount);
+        BookManager.createUnpublishedBook(bookName,version, authors, dateDue, totalAmount, advanceAmount);
 
     }
 }
