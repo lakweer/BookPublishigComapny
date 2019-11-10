@@ -77,22 +77,20 @@ public class BookManagementDB {
             ids.add(resultSet.getString(1));
         }
 
-        PreparedStatement stmt2 = connection.prepareStatement(
-                "SELECT BIN_TO_UUID(authorId) authorId, authorName, mobileNo, email FROM  `9LLVL39k5B`.Author " +
-                        "WHERE authorId IN (" + builder.deleteCharAt( builder.length() -1 ).toString() + ")"
-        );
+        String s = "SELECT BIN_TO_UUID(authorId) authorId, authorName, mobileNo, email FROM  `9LLVL39k5B`.Author " +
+                "WHERE authorId IN (" + builder.deleteCharAt( builder.length() -1 ).toString() + ")";
+        PreparedStatement stmt2 = connection.prepareStatement(s);
         for(int i = 1; i <= ids.size(); i++){
             stmt2.setString(i, ids.get(i-1));
         }
         ResultSet resultSet1 = stmt2.executeQuery();
         ArrayList<Author> authors = new ArrayList<>();
-        while (resultSet.next()){
+        while (resultSet1.next()){
             authors.add(new Author(
                     resultSet1.getString(1),
                     resultSet1.getString(2),
                     resultSet1.getInt(3),
                     resultSet1.getString(4)
-
             ));
         }
         return authors;
@@ -103,7 +101,7 @@ public class BookManagementDB {
         PreparedStatement stmt = connection.prepareStatement(
                 "SELECT BIN_TO_UUID(bookId) bookId, bookName, version, bookState  FROM " +
                         "9LLVL39k5B.Book NATURAL JOIN 9LLVL39k5B.UnpublishedBook " +
-                        "WHERE (bookName, version) = ((?), (?));"
+                        "WHERE (bookName, version) = (?, ?);"
         );
         stmt.setString(1, name);
         stmt.setInt(2, version);
