@@ -57,5 +57,9 @@ public class CreateBookUI {
         BookManager bookManager = BookManager.getInstance();
         bookManager.createUnpublishedBook(bookName,version, authors, dateDue, totalAmount, advanceAmount);
 
+        System.out.println("Successfully created " + bookName + "(Version " + version + ")");
+        String[] argsPassed = {bookName, Integer.toString(version)};
+
+        ViewBookUI.main(argsPassed);
     }
 }

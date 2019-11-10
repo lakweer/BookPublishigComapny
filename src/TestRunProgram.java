@@ -12,10 +12,11 @@ import java.util.ArrayList;
 
 public class TestRunProgram {
     public static void main(String[] args) throws SQLException {
-        BookManagementDB bookManagementDB = new BookManagementDB();
-        UnpublishedBook book = bookManagementDB.getUnpublishedBook("Madol Doova", 1);
-        OrderManager orderManager = OrderManager.getInstance();
-        System.out.println(orderManager.getAuthorOrderByBookId(book.getId()).getDateCreated());
-
+//        BookManagementDB bookManagementDB = new BookManagementDB();
+//        UnpublishedBook book = bookManagementDB.getUnpublishedBook("Madol Doova", 1);
+//        //OrderManager orderManager = OrderManager.getInstance();
+//        //System.out.println(orderManager.getAuthorOrderByBookId(book.getId()).getDateCreated());
+//        System.out.println(bookManagementDB.getAuthorsOfBook(book).get(0).getName());
+        System.out.println(Integer.toString(9));
     }
 }

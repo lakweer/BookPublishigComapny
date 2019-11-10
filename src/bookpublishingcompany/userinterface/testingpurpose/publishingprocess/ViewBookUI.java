@@ -14,15 +14,15 @@ public class ViewBookUI {
         BookManager bookManager = BookManager.getInstance();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter Book Title: ");
-        String title = scanner.nextLine();
-
-        System.out.print("Enter Version: ");
-        int version = Integer.parseInt(scanner.nextLine());
+//        System.out.print("Enter Book Title: ");
+//        String title = scanner.nextLine();
+//
+//        System.out.print("Enter Version: ");
+//        int version = Integer.parseInt(scanner.nextLine());
 
         UnpublishedBook book;
 
-        if ((book = bookManager.getUnpublishedBook(title, version)) != null){
+        if ((book = bookManager.getUnpublishedBook(args[0], Integer.parseInt(args[1]))) != null){
             System.out.println(book.getName());
             System.out.println("Go to Order?");
             if (scanner.nextLine().equals("y")){
