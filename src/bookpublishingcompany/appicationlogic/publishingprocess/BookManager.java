@@ -10,9 +10,10 @@ import java.util.ArrayList;
 public class BookManager {
 
     private static BookManager instance;
+    private BookManagementDB bookManagementDB;
 
     private BookManager(){
-
+        bookManagementDB = new BookManagementDB();
     }
 
     public static BookManager getInstance(){
@@ -20,13 +21,16 @@ public class BookManager {
         return instance;
     }
 
-    public static void createUnpublishedBook(String bookName, int version, ArrayList<Author> authors,
+    public void createUnpublishedBook(String bookName, int version, ArrayList<Author> authors,
                                              String dateDue, float totalAmount, float advanceAmount) throws SQLException {
         UnpublishedBook book = new UnpublishedBook(bookName, authors);
         if (version != 1) book.setVersion(version);
-        BookManagementDB bookManagementDB = new BookManagementDB();
         UnpublishedBook savedBook = bookManagementDB.addUnpublishedBook(book);
         OrderManager orderManager = OrderManager.getInstance();
         orderManager.createNewAuthorOrder(savedBook, dateDue, totalAmount, advanceAmount);
+    }
+
+    public UnpublishedBook getUnpublishedBook(String name, int version) throws SQLException {
+        return bookManagementDB.getUnpublishedBook(name, version);
     }
 }

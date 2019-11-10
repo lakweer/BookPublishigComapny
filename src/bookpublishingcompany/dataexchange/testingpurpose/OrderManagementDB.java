@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class OrderManagementDB {
     private Connection connection;
 
-    public void saveOrder(AuthorOrder authorOrder) throws SQLException {
+    public void saveAuthorOrder(AuthorOrder authorOrder) throws SQLException {
         connection = Database.getConnection();
 
         //Obtain a unique ID
@@ -44,5 +44,26 @@ public class OrderManagementDB {
         stmt2.setString(2, authorOrder.getAuthorId());
         stmt2.setString(3, authorOrder.getBookId());
         stmt2.execute();
+    }
+
+    public AuthorOrder getAuthorOrderByBookId(String bookId) throws SQLException {
+        connection = Database.getConnection();
+
+        PreparedStatement stmt = connection.prepareStatement("SELECT BIN_TO_UUID(orderId) orderId, authorId, bookId," +
+                "dateCreated, dateDue, totalAmount, advanceAmount " +
+                "FROM `9LLVL39k5B`.JobOrder NATURAL JOIN `9LLVL39k5B`.AuthorOrder WHERE bookId = UUID_TO_BIN(?);");
+        stmt.setString(1, bookId);
+        ResultSet resultSet = stmt.executeQuery();
+        if (resultSet.next()){
+            return new AuthorOrder(
+                    resultSet.getString(1),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getFloat(6),
+                    resultSet.getFloat(7),
+                    resultSet.getString(2),
+                    resultSet.getString(3));
+        }
+        return null;
     }
 }

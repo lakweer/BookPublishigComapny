@@ -54,7 +54,8 @@ public class CreateBookUI {
         System.out.println("Advance Amount (LKR): ");
         float advanceAmount = Float.parseFloat(scanner.nextLine());
 
-        BookManager.createUnpublishedBook(bookName,version, authors, dateDue, totalAmount, advanceAmount);
+        BookManager bookManager = BookManager.getInstance();
+        bookManager.createUnpublishedBook(bookName,version, authors, dateDue, totalAmount, advanceAmount);
 
     }
 }
