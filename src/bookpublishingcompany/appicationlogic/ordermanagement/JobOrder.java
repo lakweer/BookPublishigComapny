@@ -20,6 +20,26 @@ public class JobOrder {
         this.advanceAmount = advanceAmount;
     }
 
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public String getDateDue() {
+        return dateDue;
+    }
+
+    public float getTotalAmount() {
+        return totalAmount;
+    }
+
+    public float getAdvanceAmount() {
+        return advanceAmount;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

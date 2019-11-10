@@ -1,5 +1,7 @@
 package bookpublishingcompany.appicationlogic.companyunits;
 
+import bookpublishingcompany.appicationlogic.publishingprocess.Book;
+
 import java.util.ArrayList;
 
 /**

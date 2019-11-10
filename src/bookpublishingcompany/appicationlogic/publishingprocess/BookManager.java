@@ -2,7 +2,9 @@ package bookpublishingcompany.appicationlogic.publishingprocess;
 
 import bookpublishingcompany.appicationlogic.customermanagement.Author;
 import bookpublishingcompany.appicationlogic.ordermanagement.OrderManager;
+import bookpublishingcompany.dataexchange.testingpurpose.BookManagementDB;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class BookManager {
@@ -19,9 +21,11 @@ public class BookManager {
     }
 
     public static void createUnpublishedBook(String bookName, ArrayList<Author> authors,
-                                             String dateDue, float totalAmount, float advanceAmount){
+                                             String dateDue, float totalAmount, float advanceAmount) throws SQLException {
         UnpublishedBook book = new UnpublishedBook(bookName, authors);
+        BookManagementDB bookManagementDB = new BookManagementDB();
+        UnpublishedBook savedBook = bookManagementDB.addUnpublishedBook(book);
         OrderManager orderManager = OrderManager.getInstance();
-        String orderId = orderManager.createNewAuthorOrder(authors.get(0).getId(), dateDue, totalAmount, advanceAmount);
+        orderManager.createNewAuthorOrder(savedBook, dateDue, totalAmount, advanceAmount);
     }
 }

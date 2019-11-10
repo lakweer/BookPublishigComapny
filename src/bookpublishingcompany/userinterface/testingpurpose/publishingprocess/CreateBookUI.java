@@ -1,15 +1,19 @@
 package bookpublishingcompany.userinterface.testingpurpose.publishingprocess;
 
 import bookpublishingcompany.appicationlogic.customermanagement.Author;
+import bookpublishingcompany.appicationlogic.customermanagement.Customer;
 import bookpublishingcompany.appicationlogic.customermanagement.CustomerManager;
+import bookpublishingcompany.appicationlogic.publishingprocess.BookManager;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CreateBookUI {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         System.out.println("Create New Book");
+        CustomerManager customerManager = CustomerManager.getInstance();
 
         ArrayList<Author> authors = new ArrayList<>();
 
@@ -28,10 +32,26 @@ public class CreateBookUI {
         System.out.print("Enter mobile number: ");
         int authorMobileNo = Integer.parseInt(scanner.nextLine());
 
-        if ((author = CustomerManager.getAuthor(authorName, authorMobileNo)) != null){
-            System.out.println("Add " + author.getName() + " ?");
-
+        if ((author = customerManager.getAuthor(authorName, authorMobileNo)) != null){
+            authors.add(author);
+            System.out.println(author.getName() + " added");
         }
+
+        //Add more authors if required
+        //Display to check if correct, allow to change if needed
+
+        System.out.println("Create New Order");
+
+        System.out.print("Due date: ");
+        String dateDue = scanner.nextLine();
+
+        System.out.println("Total Amount (LKR): ");
+        float totalAmount = Float.parseFloat(scanner.nextLine());
+
+        System.out.println("Advance Amount (LKR): ");
+        float advanceAmount = Float.parseFloat(scanner.nextLine());
+
+        BookManager.createUnpublishedBook(bookName, authors, dateDue, totalAmount, advanceAmount);
 
     }
 }

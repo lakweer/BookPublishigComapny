@@ -38,10 +38,10 @@ public class CustomerManagementDB {
 
     }
 
-    public Author getAuthor(String id) throws SQLException {
+    public Author getAuthorById(String id) throws SQLException {
         connection = Database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
-                "SELECT  name, mobileNo,email FROM Author WHERE authorId=UUID_TO_BIN(?);"
+                "SELECT  name, mobileNo,email FROM `9LLVL39k5B`.Author WHERE authorId = UUID_TO_BIN(?);"
         );
         stmt.setString(1,id);
         ResultSet resultSet = stmt.executeQuery();
@@ -58,13 +58,13 @@ public class CustomerManagementDB {
         return null;
     }
 
-    public Author getAuthor(String name,int mobileNo) throws SQLException {
+    public Author getAuthorByNameAndMobile(String name, int mobileNo) throws SQLException {
         connection = Database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(
-                "SELECT BIN_TO_UUID(authorId) authorId, name, mobileNo,email FROM Author WHERE name = ? AND mobileNo = ?;"
+                "SELECT BIN_TO_UUID(authorId) authorId, name, mobileNo,email FROM `9LLVL39k5B`.Author WHERE name = ? AND mobileNo = ?;"
         );
         stmt.setString(1,name);
-        stmt.setInt(1,mobileNo);
+        stmt.setInt(2,mobileNo);
 
         ResultSet resultSet = stmt.executeQuery();
         if(resultSet.next()){

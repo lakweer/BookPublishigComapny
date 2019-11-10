@@ -7,15 +7,11 @@ import java.util.HashMap;
 
 public class UnpublishedBook extends Book {
 
-    private String drafts;
     private BookState state = BookState.CREATED;
-    private float price;
 
-    public UnpublishedBook(String id, String name, String drafts, BookState state, float price) {
+    public UnpublishedBook(String id, String name, BookState state) {
         super(id, name);
-        this.drafts = drafts;
         this.state = state;
-        this.price = price;
     }
     public UnpublishedBook(String name, ArrayList<Author> authors) {
         super(name, authors);
@@ -29,17 +25,8 @@ public class UnpublishedBook extends Book {
         this.state = state;
     }
 
-
-    public String getDrafts() {
-        return drafts;
-    }
-
     public BookState getState() {
         return state;
-    }
-
-    public float getPrice() {
-        return price;
     }
 
     public enum BookState {

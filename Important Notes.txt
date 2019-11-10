@@ -8,3 +8,9 @@ email
 username
 password
 passwordConfirm
+
+How an ID is saved in the DB and its representation in an object:
+DB - BIN
+Object - UUID
+So when you pass an object to save/query in DB - UUID_TO_BIN
+And when you retrieve a record and return an object - BIN_TO_UUID

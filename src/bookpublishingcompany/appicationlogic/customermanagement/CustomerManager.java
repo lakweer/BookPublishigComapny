@@ -19,14 +19,31 @@ public class CustomerManager {
         return instance;
     }
 
-    public static void addNewAuthor(HashMap<String, String> authorDetails) throws SQLException {
+    /***
+     * Checks if there is an existing record for given author details. If it doesn't create a new record.
+     * @param authorDetails
+     * @throws SQLException
+     */
+    public void addNewAuthor(HashMap<String, String> authorDetails) throws SQLException {
         Author author = new Author(authorDetails.get("name"), Integer.parseInt(authorDetails.get("mobileNo")),
                 authorDetails.get("email"));
-        customerManagementDB.addAuthor(author);
+        if (customerManagementDB.getAuthorByNameAndMobile(author.getName(), author.getMobileNo()) == null) {
+            boolean result = customerManagementDB.addAuthor(author);
+            if (!result) System.out.println("Added " + author.getName());
+        } else {
+            System.out.println("There is already an existing record for " + author.getName());
+        }
     }
 
-    public static Author getAuthor(String authorName, int mobileNo) {
-        //needs to be changed. This return value is just a dummy
-        return new Author("1a", "Martin", 123, "");
+    /***
+     * Searches an author by name and mobile number
+     * @param authorName
+     * @param mobileNo
+     * @return
+     * @throws SQLException
+     */
+    public Author getAuthor(String authorName, int mobileNo) throws SQLException {
+        Author author = customerManagementDB.getAuthorByNameAndMobile(authorName, mobileNo);
+        return author;
     }
 }
