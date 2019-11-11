@@ -22,10 +22,10 @@ public class OrderManager {
         return instance;
     }
 
-    public void createNewAuthorOrder(Book book, String dateDue, float totalAmount, float advanceAmount) throws SQLException {
+    public boolean createNewAuthorOrder(Book book, String dateDue, float totalAmount, float advanceAmount) throws SQLException {
         AuthorOrder authorOrder = new AuthorOrder(CommonUtility.getToday(), dateDue, totalAmount,
                 advanceAmount, book.getAuthors().get(0).getId(), book.getId());
-        orderManagementDB.saveAuthorOrder(authorOrder);
+        return !orderManagementDB.saveAuthorOrder(authorOrder);
     }
 
     public AuthorOrder getAuthorOrderByBookId(String bookId) throws SQLException {

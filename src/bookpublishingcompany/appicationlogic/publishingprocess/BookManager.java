@@ -21,13 +21,18 @@ public class BookManager {
         return instance;
     }
 
-    public void createUnpublishedBook(String bookName, int version, ArrayList<Author> authors,
-                                             String dateDue, float totalAmount, float advanceAmount) throws SQLException {
+    public boolean createUnpublishedBook(String bookName, int version, ArrayList<Author> authors,
+                                         String dateDue, float totalAmount, float advanceAmount) throws SQLException {
         UnpublishedBook book = new UnpublishedBook(bookName, authors);
-        if (version != 1) book.setVersion(version);
+        if (version != 1) {
+            book.setVersion(version);
+        }
         UnpublishedBook savedBook = bookManagementDB.addUnpublishedBook(book);
-        OrderManager orderManager = OrderManager.getInstance();
-        orderManager.createNewAuthorOrder(savedBook, dateDue, totalAmount, advanceAmount);
+        if (savedBook != null) {
+            OrderManager orderManager = OrderManager.getInstance();
+            boolean result = orderManager.createNewAuthorOrder(savedBook, dateDue, totalAmount, advanceAmount);
+            return result;
+        } return false;
     }
 
     public UnpublishedBook getUnpublishedBook(String name, int version) throws SQLException {

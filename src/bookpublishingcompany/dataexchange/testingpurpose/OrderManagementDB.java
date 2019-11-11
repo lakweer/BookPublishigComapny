@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class OrderManagementDB {
     private Connection connection;
 
-    public void saveAuthorOrder(AuthorOrder authorOrder) throws SQLException {
+    public boolean saveAuthorOrder(AuthorOrder authorOrder) throws SQLException {
         connection = Database.getConnection();
 
         //Obtain a unique ID
@@ -43,7 +43,7 @@ public class OrderManagementDB {
         stmt2.setString(1, finalUUID);
         stmt2.setString(2, authorOrder.getAuthorId());
         stmt2.setString(3, authorOrder.getBookId());
-        stmt2.execute();
+        return stmt2.execute();
     }
 
     public AuthorOrder getAuthorOrderByBookId(String bookId) throws SQLException {

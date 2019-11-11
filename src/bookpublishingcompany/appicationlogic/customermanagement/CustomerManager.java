@@ -24,15 +24,13 @@ public class CustomerManager {
      * @param authorDetails
      * @throws SQLException
      */
-    public void addNewAuthor(HashMap<String, String> authorDetails) throws SQLException {
+    public boolean addNewAuthor(HashMap<String, String> authorDetails) throws SQLException {
         Author author = new Author(authorDetails.get("name"), Integer.parseInt(authorDetails.get("mobileNo")),
                 authorDetails.get("email"));
         if (customerManagementDB.getAuthorByNameAndMobile(author.getName(), author.getMobileNo()) == null) {
             boolean result = customerManagementDB.addAuthor(author);
-            if (!result) System.out.println("Added " + author.getName());
-        } else {
-            System.out.println("There is already an existing record for " + author.getName());
-        }
+            if (!result) return true;
+        } return false;
     }
 
     /***

@@ -120,7 +120,7 @@ public class AccountCreationUI extends Application{
 		VBox root = new VBox();
 		root.setAlignment(Pos.CENTER);
 		root.setId("root");
-		root.setSpacing(10);
+		root.setSpacing(5);
 		root.getChildren().addAll(Title, UType, userTypeCombo, FirstName, FName, LastName, LName, BDay, BD, Address, Add, PhoneNum, Phone, Email, Mail, UserName, Uname, Password, Pword, PasswordConfirm, PwordCon, Create);
 		Scene scene = new Scene(root,1000,1000);
 		scene.getStylesheets().add("Style.css");

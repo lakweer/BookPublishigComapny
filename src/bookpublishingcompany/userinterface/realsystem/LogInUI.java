@@ -37,23 +37,19 @@ public class LogInUI extends Application{
 		
 		User.getStyleClass().add("Text");
 		Pword.getStyleClass().add("Text");
-		
-		CheckBox remember = new CheckBox("Remember Me");
-		remember.setId("remember");
-		
+
 		Button Log = new Button ("LogIn");
 		Log.setId("Create");
 		VBox root = new VBox();
 		root.setAlignment(Pos.CENTER);
 		root.setId("root");
 		root.setSpacing(20);
-		root.getChildren().addAll(Title, UserName,User,Password,Pword,remember, Log);
-		Scene scene = new Scene(root,1000,1000);
+		root.getChildren().addAll(Title, UserName,User,Password,Pword, Log);
+		Scene scene = new Scene(root,600,600);
 		scene.getStylesheets().add("Style.css");
 		
 		primaryStage.setScene(scene);
-		
-		
+
 		primaryStage.show();
 	}
 
