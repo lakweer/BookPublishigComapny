@@ -4,9 +4,17 @@ import bookpublishingcompany.appicationlogic.customermanagement.Author;
 import bookpublishingcompany.appicationlogic.publishingprocess.Book;
 import bookpublishingcompany.appicationlogic.publishingprocess.UnpublishedBook;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Stream;
 
 public class BookManagementDB {
     private Connection connection;
@@ -72,20 +80,20 @@ public class BookManagementDB {
         ResultSet resultSet = stmt.executeQuery();
         StringBuilder builder = new StringBuilder();
         ArrayList<String> ids = new ArrayList<>();
-        while (resultSet.next()){
+        while (resultSet.next()) {
             builder.append("UUID_TO_BIN(?),");
             ids.add(resultSet.getString(1));
         }
 
         String s = "SELECT BIN_TO_UUID(authorId) authorId, authorName, mobileNo, email FROM  `9LLVL39k5B`.Author " +
-                "WHERE authorId IN (" + builder.deleteCharAt( builder.length() -1 ).toString() + ")";
+                "WHERE authorId IN (" + builder.deleteCharAt(builder.length() - 1).toString() + ")";
         PreparedStatement stmt2 = connection.prepareStatement(s);
-        for(int i = 1; i <= ids.size(); i++){
-            stmt2.setString(i, ids.get(i-1));
+        for (int i = 1; i <= ids.size(); i++) {
+            stmt2.setString(i, ids.get(i - 1));
         }
         ResultSet resultSet1 = stmt2.executeQuery();
         ArrayList<Author> authors = new ArrayList<>();
-        while (resultSet1.next()){
+        while (resultSet1.next()) {
             authors.add(new Author(
                     resultSet1.getString(1),
                     resultSet1.getString(2),
@@ -131,11 +139,39 @@ public class BookManagementDB {
                     resultSet.getString(1),
                     resultSet.getString(2),
                     UnpublishedBook.BookState.values()[resultSet.getInt(4)]
-                    );
+            );
             unpublishedBook.setVersion(resultSet.getInt(3));
             books.add(unpublishedBook);
         }
         return books;
+    }
+
+    public boolean saveDraft(String bookId, File[] files) {
+        ArrayList<File> files1 = new ArrayList<File>(Arrays.asList(files));
+        boolean success = true;
+        for (File file : files1) {
+            File target = new File("C:\\BookPublishingCompany\\"+bookId+"\\" + file.getName());
+            target.mkdirs();
+            try {
+                Files.copy(file.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+                success = false;
+            }
+
+        }
+        return success;
+    }
+
+    public ArrayList<File> getDrafts(String bookId){
+        ArrayList<File> files = new ArrayList<>();
+        try (Stream<Path> paths = Files.walk(Paths.get("C:\\BookPublishingCompany\\"+bookId))) {
+           paths.forEach(path -> {
+               files.add(path.toFile());
+           });
+        } catch (IOException ignored) {
+        }
+        return files;
     }
 
 }
