@@ -1,7 +1,9 @@
+import bookpublishingcompany.appicationlogic.publishingprocess.UnpublishedBook;
 import bookpublishingcompany.dataexchange.testingpurpose.BookManagementDB;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class TestRunProgram {
     public static void main(String[] args) throws SQLException, IOException {
@@ -27,5 +29,11 @@ public class TestRunProgram {
 //        db.getDrafts("12345").forEach(file -> {
 //            System.out.println(file.getName());
 //        });
+
+        BookManagementDB bookManagementDB = new BookManagementDB();
+        ArrayList<UnpublishedBook> books = bookManagementDB.getUnPublishedBooks();
+        for (UnpublishedBook book : books){
+            System.out.println(book.getName());
+        }
     }
 }
